@@ -1,15 +1,16 @@
-pragma solidity ^0.4.4;
+pragma solidity ^0.4.10;
 
 contract Lottery{
-
-    //----------Variables------------
     struct ticketHolder{
-        address ticketHolderAddress;
-        uint ticketHolderOwnedTickets;
+        address _holderAddress;
+        uint _numTickets;
     }
 
+    //----------Variables------------
     //Mapping of tickets issued to each address
-    mapping (uint => ticketHolder) public tickets;
+    mapping (address => ticketHolder) public ticketHolders;
+    address[] holders;
+
     address private winner;
 
     //Total number of tickets issued
@@ -18,16 +19,14 @@ contract Lottery{
     //Total balance of the smart contract
     uint public contractBalance;
 
-    uint public gasCost;
-
     //When the lottery started
-    uint private lotteryStart;
+    uint public lotteryStart;
 
     //Duration the lottery will be active for
-    uint private lotteryDuration;
+    uint public lotteryDuration;
 
     //Flag that the lottery is now over
-    bool private lotteryEnded = false;
+    bool public lotteryEnded;
 
     //----------Events---------------
     //Event for when tickets are bought
@@ -45,46 +44,53 @@ contract Lottery{
     function Lottery(){
         ticketsIssued = 0;
         lotteryStart = now;
-        lotteryDuration = 24 * hours;
+        lotteryDuration = 24 hours;
     }
 
     //Fallback funtion - redirect to buyTickets
     function(){
-        buyTickets();
+
     }
 
-    //Award users tickets for eth
-    function buyTickets() external returns (bool success) payable {
+    //Award users tickets for eth, 1 finney = 1 ticket
+    function buyTickets() external payable returns (bool success) {
         require(now < lotteryStart + lotteryDuration);
-        if (msg.value < gasCost) return false;
-        tickets[msg.sender] = msg.value * 500;
-        ticketsIssued += tickets[msg.sender];
+        ticketHolders[msg.sender]._numTickets = msg.value / 10 ^ 15;
+        ticketsIssued += ticketHolders[msg.sender]._numTickets;
+        holders.push(msg.sender);
         contractBalance += msg.value;
-        TicketsBought(msg.sender, tickets[msg.sender]);
+        TicketsBought(msg.sender, ticketHolders[msg.sender]._numTickets);
         return true;
     }
 
     //After winners have been declared and awarded, clear the arrays and reset the balances
     function resetLottery() returns (bool success){
-        this.lotteryEnded = false;
-        this.lotteryStart = now;
+        require(now > lotteryStart + lotteryDuration);
+        lotteryEnded = false;
+        lotteryStart = now;
+        lotteryDuration = 24 hours;
         ResetLottery();
+        return true;
     }
 
     //This will distribute the correct winnings to each winner
     function awardWinnings(address _winner) returns (bool success){
-        require(now >= this.lotteryStart + this.lotteryDuration);
-        _winner.send(contractBalance);
+        require(now > lotteryStart + lotteryDuration);
+        _winner.transfer(contractBalance);
+        AwardWinnings(_winner, contractBalance);
         contractBalance = 0;
         resetLottery();
+        return true;
     }
 
     //Generate the winners by random using tickets bought as weight
     function generateWinners() returns (uint winningTicket){
-        require(now >= this.lotteryStart + this.lotteryDuration);
+        require(now > lotteryStart + lotteryDuration);
+
         //Need to make this truly random - This is temp solution for testing
-        unt rand_num = uint(block.blockhash(block.number - 1) % ticketsIssued + 1 );
-        winner =  tickets[rand_num].ticketHolderAddress;
+        uint rand_num = uint(block.blockhash(block.number - 1)) % ticketsIssued + 1 ;
+        winner = ticketHolders[holders[rand_num]]._holderAddress;
         awardWinnings(winner);
+        return rand_num;
     }
 }

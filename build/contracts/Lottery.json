@@ -1,0 +1,202 @@
+{
+  "contract_name": "Lottery",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "lotteryDuration",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "lotteryEnded",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "ticketHolders",
+      "outputs": [
+        {
+          "name": "_holderAddress",
+          "type": "address"
+        },
+        {
+          "name": "_numTickets",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "contractBalance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "ticketsIssued",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "buyTickets",
+      "outputs": [
+        {
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "payable": true,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "lotteryStart",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "resetLottery",
+      "outputs": [
+        {
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_winner",
+          "type": "address"
+        }
+      ],
+      "name": "awardWinnings",
+      "outputs": [
+        {
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "generateWinners",
+      "outputs": [
+        {
+          "name": "winningTicket",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "payable": false,
+      "type": "constructor"
+    },
+    {
+      "payable": false,
+      "type": "fallback"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "_from",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_quantity",
+          "type": "uint256"
+        }
+      ],
+      "name": "TicketsBought",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_winnings",
+          "type": "uint256"
+        }
+      ],
+      "name": "AwardWinnings",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "ResetLottery",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x6060604052341561000f57600080fd5b5b600060035542600555620151806006555b5b610574806100316000396000f300606060405236156100885763ffffffff60e060020a6000350416632d97902f811461009c578063586abc5a146100c1578063734d13b8146100e85780638b7afe2e146101295780639dbb616f1461014e578063c819982614610173578063cd8cc8441461018f578063d337616e146101b4578063dfaf1e52146101db578063fb5274e51461020e575b341561009357600080fd5b61009a5b5b565b005b34156100a757600080fd5b6100af610233565b60405190815260200160405180910390f35b34156100cc57600080fd5b6100d4610239565b604051901515815260200160405180910390f35b34156100f357600080fd5b610107600160a060020a0360043516610242565b604051600160a060020a03909216825260208201526040908101905180910390f35b341561013457600080fd5b6100af610267565b60405190815260200160405180910390f35b341561015957600080fd5b6100af61026d565b60405190815260200160405180910390f35b6100d4610273565b604051901515815260200160405180910390f35b341561019a57600080fd5b6100af610351565b60405190815260200160405180910390f35b34156101bf57600080fd5b6100d4610357565b604051901515815260200160405180910390f35b34156101e657600080fd5b6100d4600160a060020a03600435166103b4565b604051901515815260200160405180910390f35b341561021957600080fd5b6100af61045c565b60405190815260200160405180910390f35b60065481565b60075460ff1681565b60006020819052908152604090208054600190910154600160a060020a039091169082565b60045481565b60035481565b60065460055460009101421061028857600080fd5b600a345b33600160a060020a03166000908152602081905260409020919004600f18600191820181905560038054909101905580548082016102ca83826104fd565b916000526020600020900160005b8154600160a060020a033381166101009390930a83810291021990911617909155600480543401905560008181526020819052604090819020600101549192507fb24ee662b0a257d0321d324e737d2507fbe45df8af8d0da951f630f3754eb6a091905190815260200160405180910390a25060015b90565b60055481565b60065460055460009101421161036c57600080fd5b6007805460ff1916905542600555620151806006557f893ef2883e1d002809b0ecad6cae93cb02eb514120b5f0b472f986d0d5f216a360405160405180910390a15060015b90565b6006546005546000910142116103c957600080fd5b81600160a060020a03166108fc6004549081150290604051600060405180830381858888f1935050505015156103fe57600080fd5b7fbcf3be2d085a0c7c417736f3d8ac9677742eaafc8bea4dd1925f3e06220558df82600454604051600160a060020a03909216825260208201526040908101905180910390a16000600455610451610357565b50600190505b919050565b600080600654600554014211151561047357600080fd5b60035460001943014081151561048557fe5b06600101905060008060018381548110151561049d57fe5b906000526020600020900160005b9054600160a060020a036101009290920a90048116825260208201929092526040016000205460028054600160a060020a03191691831691909117908190556104f491166103b4565b508091505b5090565b81548183558181151161052157600083815260209020610521918101908301610527565b5b505050565b61034e91905b808211156104f9576000815560010161052d565b5090565b905600a165627a7a72305820b3158b0bd9c64049582642bca59263015ce4e304636a996fc84dfd756336846f0029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1502500908531
+}
