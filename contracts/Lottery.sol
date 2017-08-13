@@ -47,11 +47,6 @@ contract Lottery{
         lotteryDuration = 24 hours;
     }
 
-    //Fallback funtion - redirect to buyTickets
-    function(){
-
-    }
-
     //Award users tickets for eth, 1 finney = 1 ticket
     function buyTickets() external payable returns (bool success) {
         require(now < lotteryStart + lotteryDuration);
@@ -61,6 +56,11 @@ contract Lottery{
         contractBalance += msg.value;
         TicketsBought(msg.sender, ticketHolders[msg.sender]._numTickets);
         return true;
+    }
+    
+    //Fallback funtion - redirect to buyTickets
+    function () payable{
+        this.buyTickets();
     }
 
     //After winners have been declared and awarded, clear the arrays and reset the balances

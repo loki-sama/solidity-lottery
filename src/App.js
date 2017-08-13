@@ -1,83 +1,48 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { addContributor } from './actions/actions'
-
-import LotteryContract from '../build/contracts/Lottery.json'
 import getWeb3 from './utils/getWeb3'
+import propTypes from 'prop-types'
 
 import './css/oswald.css'
 import './css/open-sans.css'
 import './css/pure-min.css'
 import './css/App.css'
+import 'semantic-ui-css/semantic.min.css';
 
-import Navigation from './components/navigation'
-import Prizepool from './components/Prizepool'
-
-import Contriblist from './components/contriblist'
-import JoinLottery from './components/JoinLottery'
-
-const contract = require('truffle-contract');
-const Lottery = contract(LotteryContract);
-
+import LotteryContainer from './components/LotteryContainer'
+import HomeContainer from './components/HomeContainer'
 class App extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      web3: null,
-      currentPrizePool:0,
-      numberOfTicketsSold:0,
-      timeUntilPrizeAwarded:0
-    }
-    this.deployLotteryContract = this.deployLotteryContract.bind(this);
+  static propTypes = {
+    lottery: propTypes.shape({ deployed: propTypes.bool })
   }
 
-  componentWillMount() {
-    // Get network provider and web3 instance.
-    // See utils/getWeb3 for more info.
-
-    getWeb3
-    .then(results => {
-      this.setState({
-        web3: results.web3
-      })
-    })
-    .catch(() => {
-      console.log('Error finding web3.')
-    })
+  componentDidMount() {
+    this.load()
   }
-
-  deployLotteryContract(){
-    Lottery.setProvider(this.state.web3.currentProvider);
-    this.state.web3.eth.getAccounts((error, accounts) => {
-      Lottery.new({from:accounts[0], gas:100000})
-    }).catch((err) => {
-      console.log(err); 
-    })
+  async load(){
+    const Web3API = new getWeb3()
+    Web3API.deployContract();
   }
   
+
   render() {
-    const { 
-      dispatch, 
-      Contributors 
-    } = this.props;
+    if (!this.props.lottery.deployed)
+      return null
 
     return (
-      <div className="App">
-        <Navigation/>
-        <main className="container">
-          <JoinLottery onJoinLottery={text => dispatch(addContributor(text))}/>
-          <Contriblist addContrib={Contributors}/>
-        </main>
+      <div>
+          <div>
+            <HomeContainer/>
+            {/*<Route exact path="/" component={HomeContainer} />
+            <Route path="/lotteryEntry" component={LotteryContainer}/>*/}
+          </div>
       </div>
+      
     );
   }
 }
 
-function select(state) {
-  return{
-    Contributors: state.addContrib
-  }
+function mapStateToProps({ web3State: { lottery }}) {
+  return { lottery }
 }
-
-export default connect(select)(App)
+export default connect(mapStateToProps)(App)
