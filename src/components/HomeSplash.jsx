@@ -1,15 +1,18 @@
 import React, {Component} from 'react'
 import {Container, Header, Button, Icon,Segment} from 'semantic-ui-react'
-
+import propTypes from 'prop-types'
 export default class HomeSplash extends Component{
-
+    static propTypes = {
+        height: propTypes.number
+    }
     render(){
         return(
             <Segment
-            inverted
-            textAlign='center'
-            style={{minHeight:600, padding: '1em 0em'}}
-            vertical>   
+                inverted
+                textAlign='center'
+                style={{minHeight:800, padding: '1em 0em'}}
+                vertical
+            >   
                 <Container text>
                     <Header
                     as='h1'

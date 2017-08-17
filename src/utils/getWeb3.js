@@ -7,7 +7,6 @@ let  Lottery = require('../../build/contracts/Lottery')
 export default class Web3API {
   static web3
   static provider
-  static deployed
   static lottery
 
   constructor() {
@@ -21,7 +20,7 @@ export default class Web3API {
   }
 
   getLottery(){
-    return Web3API.deployed
+    return Web3API.lottery
   }
 
   //Deploy the lottery contract to the Ethereum network

@@ -1,17 +1,23 @@
 pragma solidity ^0.4.10;
 
-contract Lottery{
-    struct ticketHolder{
+contract Lottery {
+    
+    struct TicketHolder {
         address _holderAddress;
         uint _numTickets;
     }
 
     //----------Variables------------
     //Mapping of tickets issued to each address
-    mapping (address => ticketHolder) public ticketHolders;
-    address[] holders;
+    mapping (address => TicketHolder) public ticketHolders;
+    address[] public holders;
 
-    address private winner;
+    //Array of previous winners.
+    //TODO: Only hold last 10 winners
+    address[] public prevWinners;
+
+    //Winner of the current lottery
+    address public winner;
 
     //Total number of tickets issued
     uint public ticketsIssued;
@@ -28,6 +34,9 @@ contract Lottery{
     //Flag that the lottery is now over
     bool public lotteryEnded;
 
+    //Total Eth that has been won from users using the contract
+    uint public totalEthWon;
+
     //----------Events---------------
     //Event for when tickets are bought
     event TicketsBought(address indexed _from, uint _quantity);
@@ -41,7 +50,7 @@ contract Lottery{
     //---------Functions----------------
     
     //Create the lottery, each one lasts for 24 hours
-    function Lottery(){
+    function Lottery() {
         ticketsIssued = 0;
         lotteryStart = now;
         lotteryDuration = 24 hours;
@@ -59,12 +68,12 @@ contract Lottery{
     }
     
     //Fallback funtion - redirect to buyTickets
-    function () payable{
+    function () payable {
         this.buyTickets();
     }
 
     //After winners have been declared and awarded, clear the arrays and reset the balances
-    function resetLottery() returns (bool success){
+    function resetLottery() returns (bool success) {
         require(now > lotteryStart + lotteryDuration);
         lotteryEnded = false;
         lotteryStart = now;
@@ -74,7 +83,7 @@ contract Lottery{
     }
 
     //This will distribute the correct winnings to each winner
-    function awardWinnings(address _winner) returns (bool success){
+    function awardWinnings(address _winner) returns (bool success) {
         require(now > lotteryStart + lotteryDuration);
         _winner.transfer(contractBalance);
         AwardWinnings(_winner, contractBalance);
@@ -84,13 +93,16 @@ contract Lottery{
     }
 
     //Generate the winners by random using tickets bought as weight
-    function generateWinners() returns (uint winningTicket){
+    function generateWinners() returns (uint winningTicket) {
         require(now > lotteryStart + lotteryDuration);
 
         //Need to make this truly random - This is temp solution for testing
         uint rand_num = uint(block.blockhash(block.number - 1)) % ticketsIssued + 1 ;
         winner = ticketHolders[holders[rand_num]]._holderAddress;
+        prevWinners.push(winner);
         awardWinnings(winner);
         return rand_num;
     }
+
+    function getWinners() returns ()
 }

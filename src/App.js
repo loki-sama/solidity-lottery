@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import getWeb3 from './utils/getWeb3'
 import propTypes from 'prop-types'
+import { Route, Router } from 'react-router'
+import createBrowserHistory from 'history/createBrowserHistory'
 
 import './css/oswald.css'
 import './css/open-sans.css'
@@ -9,8 +11,8 @@ import './css/pure-min.css'
 import './css/App.css'
 import 'semantic-ui-css/semantic.min.css';
 
-import LotteryContainer from './components/LotteryContainer'
-import HomeContainer from './components/HomeContainer'
+import LotteryContainer from './Containers/LotteryContainer'
+import HomeContainer from './Containers/HomeContainer'
 class App extends Component {
   static propTypes = {
     lottery: propTypes.shape({ deployed: propTypes.bool })
@@ -31,11 +33,12 @@ class App extends Component {
 
     return (
       <div>
+        <Router history={createBrowserHistory()}>
           <div>
-            <HomeContainer/>
-            {/*<Route exact path="/" component={HomeContainer} />
-            <Route path="/lotteryEntry" component={LotteryContainer}/>*/}
+            <Route exact path="/" component={HomeContainer}/>
+            <Route path="/Lottery" component={LotteryContainer}/>
           </div>
+        </Router>
       </div>
       
     );

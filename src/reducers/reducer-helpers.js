@@ -3,4 +3,8 @@ const createReducerFromObj = (obj, initial) => (
     action
 ) => (obj[action.type] ? obj[action.type](state, action) : state)
 
-export { createReducerFromObj }
+const makeNewSet = (oldSet, dataToAdd) => [
+    ...new Set([...oldSet, ...dataToAdd])
+]
+
+export { createReducerFromObj, makeNewSet }

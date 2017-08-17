@@ -1,11 +1,10 @@
 import React, {Component} from 'react'
-import {Segment, Grid, Header, Container, Divider,  Button, Icon, Image} from 'semantic-ui-react'
+import {Segment, Grid, Header, Container, Divider,  Button, Image} from 'semantic-ui-react'
 import propTypes from 'prop-types'
 
 export default class HomeContent extends Component{
     static propTypes = {
-        totalWinnings: propTypes.number,
-        uniquePlayers: propTypes.number
+        lottery: propTypes.object
     }
 
     render(){
@@ -23,7 +22,7 @@ export default class HomeContent extends Component{
                             </p>
                             <Header as='h3' style={{ fontSize: '2em' }}>Send as much Ether as you want!</Header>
                             <p style={{ fontSize: '1.33em' }}>
-                            1 Finney = 1 ticket, or 1 Ether = 100 Million tickets! Buying more tickets increases your chance at winning the lottery!
+                            1 finney = 1 ticket, or 1 Ether = 1000 tickets! Buying more tickets increases your chance at winning the lottery!
                             </p>
                         </Grid.Column>
                         <Grid.Column floated='right' width={6}>
@@ -42,7 +41,7 @@ export default class HomeContent extends Component{
                     </Grid>
                 </Segment>
                 
-                <Segment style={{ padding: '8em 0em' }} vertical>
+                <Segment id='winners' style={{ padding: '8em 0em' }} vertical>
                     <Container text>
                         <Header as='h3' style={{ fontSize: '2em' }}>Recent lottery winners</Header>
                         <p style={{ fontSize: '1.33em' }}>

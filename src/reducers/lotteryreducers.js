@@ -1,15 +1,14 @@
-import types from '../actions/action-types'
-import { createReducerFromobj } from './reducer-helpers'
-const { UNIQUE_PLAYERS, TOTAL_WINNINGS } = types
-const initialState = {
-    uniquePlayers: { players: 0},
-    totalWinnings: { winnings: 0}
+/*import types from '../actions/action-types'
+import { createReducerFromObj, makeNewSet } from './reducer-helpers'
+import { combineReducers } from 'redux'
+const byIdObj = {
+    
 }
 
-//Get values from the blockchain... does this need to be done here?
-const lotteryObj = {
-    [UNIQUE_PLAYERS]: state => ({ ...state, uniquePlayers: { players: 2 } }),
-    [TOTAL_WINNINGS]: state => ({ ...state, totalWinnings: { winnings: 5 } })
+const idsObj = {
+
 }
 
-export default createReducerFromobj(lotteryObj, initialState)
+const byId = createReducerFromObj(byIdObj, {})
+const ids = createReducerFromObj(idsObj, [])
+export default combineReducers({ids, byId})*/
