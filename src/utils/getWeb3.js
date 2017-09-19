@@ -8,6 +8,7 @@ export default class Web3API {
   static web3
   static provider
   static lottery
+  static deployed = { lottery: {} }
 
   constructor() {
     if (!Web3API.provider) {
@@ -20,16 +21,22 @@ export default class Web3API {
   }
 
   getLottery(){
-    return Web3API.lottery
+    return Web3API.deployed.lottery
   }
 
   //Deploy the lottery contract to the Ethereum network
-  async deployContract(){
+  async loadContract(){
     //Lottery already deployed
     if (Web3API.lottery)
       return false
+
     Web3API.lottery = await contract(Lottery)
     await Web3API.lottery.setProvider(Web3API.provider)
+    
+  }
+
+  async deployContract() {
+    Web3API.deployed.lottery = await Web3API.lottery.deployed()
     store.dispatch(web3Actions.lotteryDeployed())
     return true
   }

@@ -4,24 +4,27 @@ import LotteryContent from '../Components/LotteryContent'
 import LotteryResults from '../Components/LotteryResults'
 import propTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { getWinners, getTotalEthSentToContract } from '../api/lottery-api'
 
 class LotteryContainer extends Component {
     static propTypes = {
-        lottery: propTypes.object
+        winners: propTypes.array,
+        totalEth: propTypes.number
     }
     render(){
         return(
             <BasicLayout heading="Lottery">
-                <LotteryContent lottery={this.props.lottery}/>
-                <LotteryResults lottery={this.props.lottery}/>
+                <LotteryContent totalEth={this.props.totalEth}/>
+                <LotteryResults winners={this.props.winners}/>
             </BasicLayout>
         )
     }
 }
 
-function mapStateToProps({ lotteryState: lottery }) {
+function mapStateToProps({ winners, totalEth }) {
     return {
-        lottery
+        winners: getWinners,
+        totalEth: getTotalEthSentToContract
     }
 }
 

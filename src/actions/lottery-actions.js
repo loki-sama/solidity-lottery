@@ -1,4 +1,4 @@
-/*import types from './action-types'
+import types from './action-types'
 import api from '../api/lottery-api'
 
 const getWinners = () => async dispatch =>
@@ -9,4 +9,4 @@ const getWinners = () => async dispatch =>
         })
     )
 
-export default { getWinners }*/
+export default { getWinners }

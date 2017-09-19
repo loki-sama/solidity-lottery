@@ -7,31 +7,28 @@ import propTypes from 'prop-types'
 
 export default class LotteryResults extends Component {
     static propTypes = {
-        lotteryState: propTypes.arrayOf(
+        winners: propTypes.arrayOf(
             propTypes.shape({
-                winners: propTypes.string
+                winner: propTypes.string
             })
         )
     }
 
     addWinnerItem(winner) {
-        const {
-            address
-        } = winner
         return (
-            <List.Item>{address}</List.Item>
+            <List.Item>{winner}</List.Item>
         )
     }
 
-    addWinnersToList() {
-        //return winnersId.map(id => this.addWinnerItem(winners[id]))
+    addWinnersToList(winners) {
+        //return winners.map(id => this.addWinnerItem(winners[id]))
     }
     render() {
         return (
             <Segment>
                 <List>
                     <List.Header></List.Header>
-                    {this.addWinnersToList()}
+                    {this.addWinnersToList ({ winners: this.props.winners })}
                 </List>
             </Segment>
         )

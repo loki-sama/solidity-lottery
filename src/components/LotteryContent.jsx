@@ -10,7 +10,7 @@ import getWeb3 from '../utils/getWeb3'
 
 class LotteryContent extends Component {
     static propTypes = {
-        lottery: propTypes.object
+        totalEth: propTypes.number
     }
     render(){
         return(
@@ -25,7 +25,13 @@ class LotteryContent extends Component {
                         as='h1'
                         content='Welcome to the Lottery!'
                         style={{fontsize: '4em', fontweight: 'normal', marginBottom:0, marginTop: '3em'}}/>
-                        <p>Send your Eth to the contract {this.props.lottery} to recieve your tickets!</p>
+                        <p>Send your Eth to the contract --GETCONTRACTADDRESS-- to recieve your tickets!</p>
+                    </Container>
+                    <Container text>
+                        <Header
+                        as='h2'
+                        style={{fontsize: '4em', fontweight:'normal', marginBottom:0, marginTop: '3em'}}>
+                        Since this contract has been live, {this.props.totalEth} has been sent to it!</Header>
                     </Container>
                 </Segment>
             </div>
